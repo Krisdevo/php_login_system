@@ -1,25 +1,33 @@
-
+<!-- login.php -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Connexion</title>
+  <meta charset="UTF-8">
+  <title>Connexion</title>
 </head>
 <body>
-    <h1>Connectez-Vous!</h1>
-    <form action="process_login.php" method="post">
-        <label for="email"> E-mail</label>
-        <input type="email" name="email" id ="email" required> <br>
-        <label for="password"> Mot de passe</label>
-        <input type="password" name="password" id="password" required><br>
-        <div class="checked">
-            <input type="checkbox" name="remember_me" id="remember_me">
-            <label for="remember_me">Se souvenir de moi!</label>
-        </div>
-        <button type="submit">Me connecter</button>
+  <h2>Connexion</h2>
+  <?php
+    session_start();
+    require 'csrf.php';
+    require 'db.php';
 
-    </form>    
+    if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
+        die("⚠️ Tentative CSRF détectée !");
+    }
+  ?>
+  <form method="POST" action="process_login.php">
+    <label>Email :</label><br>
+    <input type="email" name="email" required><br>
+
+    <label>Mot de passe :</label><br>
+    <input type="password" name="password" required><br>
+
+    <label>
+      <input type="checkbox" name="remember_me"> Se souvenir de moi
+    </label><br>
+
+    <button type="submit">Se connecter</button>
+  </form>
 </body>
 </html>
