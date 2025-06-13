@@ -61,6 +61,7 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
+    
 
 }
 
@@ -68,10 +69,11 @@ label {
     color: aquamarine;
     font-size: 1.2rem;
     text-align: center;
-    margin: 1rem 0;
+    margin: 0.5rem 0;
 }
 
 input {
+    margin: 0.5rem 0;
     width: 250px;
     line-height: 2;
     border-radius: 1rem;
@@ -108,6 +110,6 @@ button {
     color : green;
 }
 
-.alert{
+.error{
     color: red;
 }

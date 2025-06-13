@@ -4,7 +4,7 @@ session_start();
 require 'db.php';
 require 'csrf.php';
 
-// système de protection CRSF
+// système de protection CSRF
 if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
     die("! Tentative CSRF détectée !");
 }

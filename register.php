@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Inscription</title>
-  <link rel="stylesheet" href="public/css/style.css"> <!-- au besoin -->
+  <link rel="stylesheet" href="style.css"> <!-- au besoin -->
 </head>
 <body>
   <h2>Créer un compte</h2>
@@ -25,6 +25,7 @@
     <input type="password" name="password" required><br>
 
     <button type="submit">S'inscrire</button>
+    <p>Déjà inscrit ? <a href="login.php" class="sign"> Se Connecter !</a></p>
     <div id="message"></div>
   </form>
 

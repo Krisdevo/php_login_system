@@ -1,5 +1,7 @@
 # Création d'un système d'inscription et de connexion avec PHP
 
+[Screen du formulaire d'inscription](/images/log.png)
+
 ## Résumé
 
 Il s'agit d'un petit système d'inscription et de connexion relié à une BDD. L'utilisateur peut s'inscrire, se connecter et se déconnecter.  
@@ -13,6 +15,29 @@ Pour installer le projet utilisez la commande git clone.. Installez Xammp et cli
 ### dashboard.php
 
 Ce fichier est simplement notre page d'accueil, une fois que l'utilisateur s'est inscris ou connecter.
+
+On créé un systéme qui ajoutera à l'utilisateur un token unique stockés dans la clé remember_tokens.Ce token servira de sécurité supplémentaire lorsque l'utilisateur essaiera de se connecter car le navigateur récupèrera celui ci pour le comparer lors du processus de connexion.
+
+```
+if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
+    list($selector, $validator) = explode(':', $_COOKIE['remember_me']);
+
+    $stmt = $pdo->prepare("SELECT * FROM remember_tokens WHERE selector = ? AND expires >= NOW()");
+    $stmt->execute([$selector]);
+    $token = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($token && hash_equals($token['hashed_validator'], hash('sha256', $validator))) {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->execute([$token['user_id']]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+        }
+    }
+}
+```
 
 ### db.php
 
@@ -46,6 +71,8 @@ La fonction getCode récupère la possible erreur 1049.
 
 ```
 
+
+
 ### login.php
 
 Ce fichier représente notre formulaire d'incription
@@ -76,6 +103,7 @@ On crée un token pour stockés les données dans le cookie en toute sécurité 
         }
 
 ```
+
 
 ### logout.php
 

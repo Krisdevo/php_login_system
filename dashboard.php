@@ -34,6 +34,7 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <title>Tableau de bord</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
