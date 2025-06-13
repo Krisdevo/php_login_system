@@ -38,6 +38,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     }
 }
 ```
+Quand nous utilisons des super global pour les afficher sur le site. On utilise la fonction htmlspcialchars() pour éviter toute tentative d'injection html malveillante.
 
 ### db.php
 

@@ -15,14 +15,14 @@
   ?>
 
   <form id="register-form">
-    <label>Pseudo :</label><br>
-    <input type="text" name="username" required><br>
+    <label>Pseudo :</label>
+    <input type="text" name="username" required>
 
-    <label>Email :</label><br>
-    <input type="email" name="email" required><br>
+    <label>Email :</label>
+    <input type="email" name="email" required>
 
-    <label>Mot de passe :</label><br>
-    <input type="password" name="password" required><br>
+    <label>Mot de passe :</label>
+    <input type="password" name="password" required>
 
     <button type="submit">S'inscrire</button>
     <p>Déjà inscrit ? <a href="login.php" class="sign"> Se Connecter !</a></p>
