@@ -4,14 +4,14 @@ require_once '../includes/auth.php';
 require_once '../includes/csrf.php';
 require_once '../includes/functions.php';
 
-$errors = [];
-$mode = $_GET['mode'] ?? 'login';
-$token = generate_csrf_token();
+$errors = []; // Tableau d'erreur possible lors de l'inscription 
+$mode = $_GET['mode'] ?? 'login'; // On stocke une variable qui changera de mode en fonction d'inscription ou connexion
+$token = generate_csrf_token(); 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!verify_csrf_token($_POST['csrf_token'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Si la méthode de la requête est POST 
+    if (!verify_csrf_token($_POST['csrf_token'])) { // Si il n'ya pas de token affiche l'erreur suivante.
         $errors[] = "Token CSRF invalide.";
-    } else {
+    } else {   //Sinon récupère l'email et le mot de passe de l'utilisateur 
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
@@ -24,15 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = "Mot de passe trop court(8 caractères min)";
             }
 
-            if (empty($errors)) {
+            if (empty($errors)) {  // Si il n' y a pas d'erreur, trouve dans la BDD l'utilisateur avce son mail et compare les données
                 $user = find_user_by_email($email);
                 if ($user && password_verify($password, $user['password'])) {
-                    login_user($user);
-                    if (isset($_POST['remember']))
-                        remember_me($user['id']);
-                    header('Location : dashboard.php');
+                    login_user($user); // Ensuite authorise la connexion 
+                    if (isset($_POST['remember'])) // A t'il coché se souvenir de moi ?
+                        remember_me($user['id']); // Dans ce cas on stocke ses données dans le cookie
+                    header('Location : dashboard.php'); // On le redirige sur la page d'accueil
                     exit;
-                } else {
+                } else { // Si il y a erreur affcihe le message suivant
                     $errors[] = "Identifiants incorrects";
                 }
             }
@@ -66,14 +66,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = "Email déjà utilisé ! ";
             }
 
-            if (empty($errors)) {
+            if (empty($errors)) { // Si il n' y a pas d'erreur ajoute l'utilisateur à la BDD
                 if (create_user($username, $email, $password)) {
                     $user = find_user_by_email($email);
-                    login_user($user);
-                    header('Location : dashboard.php');
+                    login_user($user); // Connecte le 
+                    header('Location : dashboard.php');// Redirige le sur la page d'accueil
                     exit;
                 } else {
-                    $errors[] = "Erreur à l'inscription";
+                    $errors[] = "Erreur à l'inscription"; // Sinon affiche l'erreur
                 }
 
             }
@@ -112,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <h1><?= $mode === 'register' ? 'inscription' : 'Connexion' ?></h1>
 
+        <!-- Si on est dans register affiche moi ces balises -->
         <?php if ($mode === 'register'): ?>
 
             <label>Pseudo :</label>
@@ -124,8 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <label>Mot de passe :</label>
         <input type="password" name="password" placeholder="Mot de passe">
-
-        <?php if ($mode === 'login'): ?>
+            <!-- Si on est dans login affiche moi ces balises -->
+        <?php if ($mode === 'login'): ?> 
             <label class="checked">
                 <input type="checkbox" name="remember"> Se souvenir de moi
             </label>
